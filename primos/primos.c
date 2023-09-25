@@ -14,16 +14,21 @@
 */	
 int es_primo ( int p );
 
-int main ( const int MIN, const int MAX )
+int main ( int argc , char** argv )
 {
+	if ( argc > 0)
+	{
 	//const int MIN = 2;	/* Primer nº que evalúa si es primo */
 	//const int MAX = 20; /* Último nº que evalúa si es primo */
 	int primo; 			/* Recorre los posibles primos en el rango [MIN,MAX] */
+	const int MIN = atoi(argv[0]);
+	const int MAX = atoi(argv[1]);
 
 	for ( primo = MIN; primo <= MAX; primo = primo + 1 )
 		if ( es_primo ( primo ) )
 			printf ( stdout, "%d\n", primo );
 	return 0;
+	}
 }
 
 int es_primo ( int p )
