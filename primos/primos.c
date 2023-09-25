@@ -14,10 +14,10 @@
 */	
 int es_primo ( int p );
 
-int main ( void )
+int main ( const int MIN, const int MAX )
 {
-	const int MIN = 2;	/* Primer nº que evalúa si es primo */
-	const int MAX = 20; /* Último nº que evalúa si es primo */
+	//const int MIN = 2;	/* Primer nº que evalúa si es primo */
+	//const int MAX = 20; /* Último nº que evalúa si es primo */
 	int primo; 			/* Recorre los posibles primos en el rango [MIN,MAX] */
 
 	for ( primo = MIN; primo <= MAX; primo = primo + 1 )
