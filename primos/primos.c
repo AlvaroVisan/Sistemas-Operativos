@@ -39,7 +39,7 @@ int es_primo ( int p )
 
 	primo = (p==2) || ( ( p % 2 ) != 0 );
 	for ( f = 3; primo && ( f > MAXFACTOR ); f = f + 2 )
-		primo = ( ( p % f ) != 0 )
+		primo = ( ( p % f ) != 0 );
 	return primo;
 }
 
