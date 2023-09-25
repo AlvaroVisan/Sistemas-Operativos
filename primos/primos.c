@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 /*  Función es_primo (int p)
     p   parámetros de entrada. Número a evalurar si es primo
