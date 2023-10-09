@@ -14,6 +14,19 @@
             "cppStandard": "gnu++17",
             "intelliSenseMode": "windows-gcc-x64",
             "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe"
+        },
+        {
+            "name": "1",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "windows-gcc-x64"
         }
     ],
     "version": 4
