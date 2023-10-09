@@ -39,20 +39,60 @@ static int obtenerResultado ( const int tabla[] )
     for ( i = 0; i < NA && tabla[i] == SIN_DATO; i++ );
     return tabla[i];
 }
+static int* crearTablaResultados (void)
+{
+    const size_t tam = sizeof(int) * (size_t) NA;
+    const int prot = PROT_READ | PROT_WRITE;
+    const int flags = MAP_ANON | MAP_SHARED;
+    return mmap( NULL, tam, prot, flags, -1, (off_t)0);
+}
+static void crearProcesos (int *tabla)
+{
+    for ( int i = 0; i< NA; i++)
+        if (fork() == 0)
+        {
+            tabla[i] = aplicarAlgoritmo(i);
+            exit(0);
+        }
+}
+static void esperarResultado ()
+{
+    wait ( NULL );
+}
 int main ( void )
 {
     aleatorio = arc4random();
     /* Acciones que debe hacer el programa:
     - Crear una tabla en memoria compartida con capacidad para
     almacenar 5 enteros y dejarla limpia (sin datos).
+    */
+   int* const tabla = crearTablaResultados();
+   if (tabla == NULL)
+        return -1;
+    limpiarTabla(tabla);
+   /*
     - Crear 5 procesos que ejecuten la función aplicarAlgoritmo()
     y guarden el entero que devuelve esta función en una posición
     de la tabla, distinta para cada proceso.
+    */
+    crearProcesos(tabla);
+    /*
     - Esperar a que uno de los procesos creados termine.
+    */
+    esperarResultado();
+   /*
     - Mandar terminar a todos los procesos que aún se están
     ejecutando, enviándoles la señal SIGTERM.
+    */
+    kill (-1, SIGTERM);
+   /*
     - Esperar a que todos los procesos terminen.
+    */
+    while ( wait(NULL) > 0);
+   /*
     - Escribir por la salida estándar el resultado obtenido.
     */
+    const int resultado = obtenerResultado(tabla);
+    printf ("El resultado ha sido %d\n", resultado);
     return 0;
 }
