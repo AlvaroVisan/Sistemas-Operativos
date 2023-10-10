@@ -14,6 +14,7 @@ static int obtenerResultados (const int n)
 {
     int suma;
     int cont, i;
+    int restar;
     for (suma = cont = i = 0; i < n; i++)
     {
         int estado;
