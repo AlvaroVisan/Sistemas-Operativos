@@ -28,7 +28,7 @@ static int obtenerResultados (const int n)
     if (cont == 0)
         return -1;
     else
-        return suma / count;
+        return suma / cont;
 }
 int main ( const int argc, const char * const argv[] )
 {

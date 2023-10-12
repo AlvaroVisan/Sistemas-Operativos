@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <stdint.h>
 static const int NA = 5; /* número de algoritmos a utilizar */
 static uint32_t aleatorio; /* usado para generar una solución aleatoria */
 static const int SIN_DATO = 0; /* dato no válido */
@@ -43,7 +44,7 @@ static int* crearTablaResultados (void)
 {
     const size_t tam = sizeof(int) * (size_t) NA;
     const int prot = PROT_READ | PROT_WRITE;
-    const int flags = MAP_ANON | MAP_SHARED;
+    const int flags = MAP_PRIVATE | MAP_SHARED;
     return mmap( NULL, tam, prot, flags, -1, (off_t)0);
 }
 static void crearProcesos (int *tabla)

@@ -57,7 +57,7 @@ static void mandarTerminar ( void )
     kill ( -getpgid(0), SIGTERM );
     fprintf ( stdout, "He mandado terminar a los hijos\n" );
 }
-static esperarHijos(void)
+static void esperarHijos(void)
 {
     while ( wait(NULL) != -1);
 }

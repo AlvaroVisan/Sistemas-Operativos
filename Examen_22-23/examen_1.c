@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <sysexits.h>
 
-static void uso(void);
+static void uso(const char* nombre);
 static void redimensionar(const char* fich_imagen, const char* dir_resultados,int tamano);
 
 int main(int argc, char** argv)
