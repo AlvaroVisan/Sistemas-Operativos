@@ -11,10 +11,14 @@
 
 static void uso(void);
 static void convertir(const char* fich_imagen, const char* dir_resultados);
+static void esperarHijos();
+
 
 int main(int argc, char** argv)
 {
 	const char* dir_resultados;
+	const int cores = 4;
+	int j = 0;
 
 	if (argc < 3) {
 		uso();
@@ -22,7 +26,16 @@ int main(int argc, char** argv)
 	}
 	dir_resultados = argv[1];
 	for (int i = 2; i < argc; i++)
+	{
+		if (j == cores)
+		{
+			wait(NULL);
+			j = 0;
+		}
 		convertir(argv[i], dir_resultados);
+		j++;
+	}
+	esperarHijos();
 	exit(EX_OK);
 }
 
@@ -47,4 +60,8 @@ static void convertir(const char* fich_imagen, const char* dir_resultados)
 	snprintf(orden, sizeof(orden), "convert '%s' -blur 0x8 '%s'", fich_imagen, nombre_destino);
 	fprintf(stderr, "AVISO: La versión baśica del programa usa system() para lanzar procesos nuevos. Los estudiantes deben cambiarla por fork-exec-wait\n");
 	system(orden);
+}
+static void esperarHijos()
+{
+	while ( wait(NULL) != -1);
 }
