@@ -4,6 +4,10 @@
 #include <string.h>
 #include <unistd.h>
 #include <sysexits.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <errno.h>
 
 static void uso(void);
 static void convertir(const char* fich_imagen, const char* dir_resultados);
