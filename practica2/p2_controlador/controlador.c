@@ -12,6 +12,7 @@
 static void uso(void);
 static void convertir(const char* fich_imagen, const char* dir_resultados);
 static void esperarHijos();
+static void mandarTerminar();
 
 
 int main(int argc, char** argv)
@@ -35,6 +36,7 @@ int main(int argc, char** argv)
 		convertir(argv[i], dir_resultados);
 		j++;
 	}
+	mandarTerminar();
 	esperarHijos();
 	exit(EX_OK);
 }
@@ -64,4 +66,11 @@ static void convertir(const char* fich_imagen, const char* dir_resultados)
 static void esperarHijos()
 {
 	while ( wait(NULL) != -1);
+}
+static void mandarTerminar ( void )
+{
+    printf ( stdout, "Voy a mandar terminar a los hijos\n" );
+    signal ( SIGTERM, SIG_IGN );
+    kill ( -getpgid(0), SIGTERM );
+    fprintf ( stdout, "He mandado terminar a los hijos\n" );
 }
