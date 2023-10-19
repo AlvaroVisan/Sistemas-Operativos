@@ -28,13 +28,19 @@ int main(int argc, char** argv)
 	dir_resultados = argv[1];
 	for (int i = 2; i < argc; i++)
 	{
-		if (j == cores)
+		for (int j = 0; j < cores && i+j < argc; j++)
 		{
-			wait(NULL);
-			j = 0;
+			if (fork() == 0)
+			{
+				convertir(argv[i+j], dir_resultados);
+				exit(EX_SOFTWARE);
+			}
+			if(j==3)
+			{
+				wait(NULL);
+				i=i+j;
+			}
 		}
-		convertir(argv[i], dir_resultados);
-		j++;
 	}
 	mandarTerminar();
 	esperarHijos();
@@ -69,7 +75,7 @@ static void esperarHijos()
 }
 static void mandarTerminar ( void )
 {
-    printf ( stdout, "Voy a mandar terminar a los hijos\n" );
+    fprintf ( stdout, "Voy a mandar terminar a los hijos\n" );
     signal ( SIGTERM, SIG_IGN );
     kill ( -getpgid(0), SIGTERM );
     fprintf ( stdout, "He mandado terminar a los hijos\n" );
