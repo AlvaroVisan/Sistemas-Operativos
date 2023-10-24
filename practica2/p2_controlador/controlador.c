@@ -41,6 +41,7 @@ static void convertir(const char* fich_imagen, const char* dir_resultados)
 		nombre_base++;
 	snprintf(nombre_destino, sizeof(nombre_destino), "%s/%s", dir_resultados, nombre_base);
 	snprintf(orden, sizeof(orden), "convert '%s' -blur 0x8 '%s'", fich_imagen, nombre_destino);
-	fprintf(stderr, "AVISO: La versión baśica del programa usa system() para lanzar procesos nuevos. Los estudiantes deben cambiarla por fork-exec-wait\n");
-	system(orden);
+	printf("ORDEN: %s\n", orden);
+	execlp("convert", "convert", fich_imagen, "-blur","0x8", nombre_destino, NULL);
+	perror ( "exec" );
 }
