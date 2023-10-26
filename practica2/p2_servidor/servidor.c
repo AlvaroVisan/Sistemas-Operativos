@@ -67,6 +67,8 @@ static void atender_cliente(const int s_cliente)
             printf("AVISO: el cliente ha introducido un dato inválido.\n");
         exit(EX_SOFTWARE);
     }
+	else
+		wait(NULL);
 
 }
 
