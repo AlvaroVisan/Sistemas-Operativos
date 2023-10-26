@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <sys/wait.h>
 #define RES_FIN_CORRECTO 1
 #define RES_ERROR 2
 #define RES_DATO_INVALIDO 3
