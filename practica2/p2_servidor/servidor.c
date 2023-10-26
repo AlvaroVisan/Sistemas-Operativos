@@ -8,7 +8,6 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
 #define RES_FIN_CORRECTO 1
 #define RES_ERROR 2
 #define RES_DATO_INVALIDO 3
@@ -52,7 +51,7 @@ int main(int argc, char** argv)
 			// close(s_cliente);
 		}
 	} while (s_cliente != -1);
-	
+
 	close(s_escucha);
 	exit(EX_OK);
 }
@@ -61,9 +60,14 @@ static void atender_cliente(const int s_cliente)
 {
 	int res_proc;
 
-	res_proc = procesar_sesion(s_cliente);
-	if (res_proc == RES_DATO_INVALIDO)
-		printf("AVISO: el cliente ha introducido un dato inválido.\n");
+	if(fork()==0)
+    {
+        res_proc = procesar_sesion(s_cliente);
+        if (res_proc == RES_DATO_INVALIDO)
+            printf("AVISO: el cliente ha introducido un dato inválido.\n");
+        exit(EX_SOFTWARE);
+    }
+
 }
 
 static int procesar_sesion(const int s_cliente)
