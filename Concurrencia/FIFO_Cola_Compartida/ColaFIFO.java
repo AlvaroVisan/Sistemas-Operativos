@@ -23,8 +23,7 @@ public class ColaFIFO<Elemento> {
         return nelem == tamaño;
     }
 
-    public void meter(Elemento e)
-            throws ExcepcionColaLlena {
+    public void meter(Elemento e) throws ExcepcionColaLlena {
         if (estaLlena())
             throw new ExcepcionColaLlena();
         cola[fin] = e;
@@ -32,8 +31,7 @@ public class ColaFIFO<Elemento> {
         nelem++;
     }
 
-    public Elemento sacar()
-            throws ExcepcionColaVacia {
+    public Elemento sacar() throws ExcepcionColaVacia {
         Elemento e;
         if (estaVacia())
             throw new ExcepcionColaVacia();
