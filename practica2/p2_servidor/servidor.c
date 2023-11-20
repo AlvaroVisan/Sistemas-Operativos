@@ -9,6 +9,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
+#include <signal.h>
+#include <errno.h>
 #define RES_FIN_CORRECTO 1
 #define RES_ERROR 2
 #define RES_DATO_INVALIDO 3
@@ -49,9 +51,13 @@ int main(int argc, char** argv)
 		if (s_cliente != -1) {
 			atender_cliente(s_cliente);
 			// Descomentar en el servidor multiproceso para que tanto el padre como el hijo cierren sus respectivos descriptores del socket.
-			// close(s_cliente);
+			close(s_cliente);
 		}
+		pid_t pid_hijo;
+		int e;
+		pid_hijo= wait3(&e, WNOHANG, NULL);
 	} while (s_cliente != -1);
+
 
 	close(s_escucha);
 	exit(EX_OK);
@@ -60,7 +66,6 @@ int main(int argc, char** argv)
 static void atender_cliente(const int s_cliente)
 {
 	int res_proc;
-
 	if(fork()==0)
     {
         res_proc = procesar_sesion(s_cliente);
@@ -68,11 +73,7 @@ static void atender_cliente(const int s_cliente)
             printf("AVISO: el cliente ha introducido un dato inválido.\n");
         exit(EX_SOFTWARE);
     }
-	else
-		wait(NULL);
-
 }
-
 static int procesar_sesion(const int s_cliente)
 {
 	FILE* f_cliente;

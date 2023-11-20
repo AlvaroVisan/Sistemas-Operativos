@@ -4,22 +4,18 @@
 #include <string.h>
 #include <unistd.h>
 #include <sysexits.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
 #include <errno.h>
 
 static void uso(void);
 static void convertir(const char* fich_imagen, const char* dir_resultados);
-static void esperarHijos();
-static void mandarTerminar();
-
+static void mandarTerminar(void);
 
 int main(int argc, char** argv)
 {
 	const char* dir_resultados;
-	const int cores = 4;
-	int j = 0;
+	int cores = 4;
 
 	if (argc < 3) {
 		uso();
@@ -27,23 +23,22 @@ int main(int argc, char** argv)
 	}
 	dir_resultados = argv[1];
 	for (int i = 2; i < argc; i++)
-	{
-		for (int j = 0; j < cores && i+j < argc; j++)
-		{
-			if (fork() == 0)
-			{
-				convertir(argv[i+j], dir_resultados);
-				exit(EX_SOFTWARE);
-			}
-			if(j==3)
-			{
-				wait(NULL);
-				i=i+j;
-			}
-		}
-	}
-	mandarTerminar();
-	esperarHijos();
+    {
+        for (int j = 0; j<cores && i+j < argc; j++)
+        {
+            if(fork()==0)
+            {
+                convertir(argv[i+j], dir_resultados);
+                exit(EX_SOFTWARE);
+            }
+            if(j==3)
+            {
+                wait(NULL);
+                i = i + j;
+            }
+            mandarTerminar();
+        }
+    }
 	exit(EX_OK);
 }
 
@@ -70,14 +65,8 @@ static void convertir(const char* fich_imagen, const char* dir_resultados)
 	execlp("convert", "convert", fich_imagen, "-blur","0x8", nombre_destino, NULL);
 	perror ( "exec" );
 }
-static void esperarHijos()
+static void mandarTerminar(void)
 {
-	while ( wait(NULL) != -1);
-}
-static void mandarTerminar ( void )
-{
-    fprintf ( stdout, "Voy a mandar terminar a los hijos\n" );
-    signal ( SIGTERM, SIG_IGN );
-    kill ( -getpgid(0), SIGTERM );
-    fprintf ( stdout, "He mandado terminar a los hijos\n" );
+    if(signal(SIGTERM, SIG_IGN))
+        kill(-getpgid(0), SIGTERM);
 }
