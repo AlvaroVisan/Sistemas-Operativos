@@ -1,20 +1,29 @@
 package practica3;
 
-import ssoo.videos.Encargo;
+import java.io.IOException;
+
 import ssoo.videos.servidor.Peticion;
+import ssoo.videos.servidor.ReceptorPeticiones;
 
 public class HiloRecepcion implements Runnable {
-    Encargo encargo;
-    public HiloRecepcion(Peticion peticion) {
-        this.encargo = peticion.getEncargo();
+    ReceptorPeticiones receptorPeticiones;
+    public HiloRecepcion() {
+  
     }
     @Override
     public void run() {
-        for(int i = 0; i < 10; i++) {
-            HiloEncargo hiloEncargo = new HiloEncargo(encargo);
-            Thread hilo = new Thread(hiloEncargo);
-            hilo.start();
+        try {
+            receptorPeticiones = new ReceptorPeticiones();
+            Peticion peticion;
+            while((peticion = receptorPeticiones.recibirPeticion()) != null) {
+                HiloEncargo hiloEncargo = new HiloEncargo(peticion);
+                Thread hilo = new Thread(hiloEncargo);
+                hilo.start();
         }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
     
 }
