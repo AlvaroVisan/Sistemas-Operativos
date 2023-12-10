@@ -10,6 +10,7 @@ public class HiloRecepcion implements Runnable {
 
 
 	private ColaTrabajosArrayBlockingQueue cola;
+	private CacheTrabajosActivos cache;
 
 
 	@Override
@@ -19,12 +20,13 @@ public class HiloRecepcion implements Runnable {
 		try {
 			final ReceptorPeticiones receptor = new ReceptorPeticiones();
 			cola = new ColaTrabajosArrayBlockingQueue(10);
+			cache = new CacheTrabajosActivos();
 			PanelVisualizador.getPanel().registrarColaPeticiones(cola);
 			int i = 0;
 			while(true)
 			{
 				final Peticion peticion = receptor.recibirPeticion();
-				HiloEncargo hiloEncargo = new HiloEncargo(peticion,cola);
+				HiloEncargo hiloEncargo = new HiloEncargo(peticion,cola, cache);
 				Thread hilo = new Thread(hiloEncargo);
 				hilo.start();
 				if(i<Runtime.getRuntime().availableProcessors())

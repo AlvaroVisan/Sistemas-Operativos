@@ -17,13 +17,15 @@ public class HiloEncargo implements Runnable{
 	private ColaTrabajosArrayBlockingQueue cola;
 	private List<Trabajo> lista;
 	private List<Video> listaV;
+	private CacheTrabajosActivos cache;
 	
-	public HiloEncargo(Peticion p, ColaTrabajosArrayBlockingQueue cola2)
+	public HiloEncargo(Peticion p, ColaTrabajosArrayBlockingQueue cola2, CacheTrabajosActivos cache)
 	{
 		this.peticion=p;
 		this.cola = cola2;
 		lista = new ArrayList<Trabajo>();
 		listaV = new ArrayList<Video>();
+		this.cache = cache;
 	}
 	@Override
 	public void run() {
@@ -37,8 +39,17 @@ public class HiloEncargo implements Runnable{
 		for(Video v : encargo.getVideos())
 		{
 			trabajo = new Trabajo(v);
-			cola.encolar(trabajo);
-			lista.add(trabajo);
+			if(!cache.yaExisteTrabajo(trabajo))
+			{
+				cache.anadirMap(trabajo);
+				cola.encolar(trabajo);
+				lista.add(trabajo);
+			}
+			else
+			{
+				trabajo = cache.obtenerTrabajo(trabajo);
+				lista.add(trabajo);
+			}
 		}
 		Thread.sleep(5000); //Preguntar si es espera activa o inactiva
 		/*
