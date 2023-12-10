@@ -21,6 +21,14 @@ public class CacheTrabajosActivos implements Numerable {
     {
         return map.get(t.getVideoOriginal());
     }
+    public ConcurrentHashMap<Video, Trabajo> obtenerMapa()
+    {
+        return map;
+    }
+    public void borrarTrabajo(Trabajo t)
+    {
+        map.remove(t.getVideoOriginal());
+    }
 
     @Override
     public int numTrabajos() {
