@@ -1,28 +1,33 @@
-package practica3;
+package fase2;
 
 import ssoo.videos.Transcodificador;
 
-public  class HiloTranscodificador implements Runnable {
-    ColaTrabajos<Trabajo> colaTrabajos;
-    Trabajo trabajo;
-    Transcodificador transcodificador;
-    public HiloTranscodificador(ColaTrabajos<Trabajo> colaTrabajos) {
-        this.colaTrabajos = colaTrabajos;
-        this.transcodificador = new Transcodificador();
-    }
+public class HiloTranscodificador implements Runnable {
 
-    @Override
-    public void run() {
-        try {
-            while (colaTrabajos.numTrabajos() > 0) {
-                trabajo=colaTrabajos.sacar();
-                trabajo.setVideoProcesado(transcodificador.transcodificar(trabajo.getVideoOriginal()));
-            }
+	private Trabajo t;
+	private ColaTrabajosArrayBlockingQueue cola;
+	private Transcodificador transcodificador;
+	
+	public HiloTranscodificador(ColaTrabajosArrayBlockingQueue cola2)
+	{
+		this.cola = cola2;
+		transcodificador = new Transcodificador();
+	}
+	
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		try {
+			while(cola.numTrabajos() > 0)
+			{
+				t = cola.desencolar();
+				//v = transcodificador.transcodificar(t.getVideoOriginal());
+				t.setVideoTranscodificado(transcodificador.transcodificar(t.getVideoOriginal()));
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
-        } catch (ExcepcionColaVacia e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
 }

@@ -1,9 +1,16 @@
-package practica3;
+package fase2;
+
+
 
 public class ServidorVideos {
-    public static void main(String[] args) {
-        HiloRecepcion hiloRecepcion = new HiloRecepcion();
-        Thread hilo = new Thread(hiloRecepcion);
-        hilo.start();
-    }
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+			HiloRecepcion hiloR = new HiloRecepcion();
+			Thread hilo = new Thread(hiloR);
+			hilo.start();
+
+	}
+
 }
