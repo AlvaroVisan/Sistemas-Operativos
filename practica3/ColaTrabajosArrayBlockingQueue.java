@@ -1,4 +1,3 @@
-package fase2;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import ssoo.videos.Numerable;
@@ -7,9 +6,9 @@ public class ColaTrabajosArrayBlockingQueue implements Numerable{
 
 	private ArrayBlockingQueue<Trabajo> cola;
 
-	public ColaTrabajosArrayBlockingQueue ( int tamaño ) {
+	public ColaTrabajosArrayBlockingQueue ( int tamano ) {
 
-		cola = new ArrayBlockingQueue<Trabajo>(tamaño);
+		cola = new ArrayBlockingQueue<Trabajo>(tamano);
 	}
 
 	public void encolar ( Trabajo e ) throws InterruptedException {
